@@ -50,46 +50,848 @@
 			<div class="slides">
 				<!-- ########################################################## -->
 				<section>
-					<h2>Title</h2>
-					 <img src="./figures/euler.png" height="400">
+					<h2>Making sense of single-cell data</h2>
+						<div  id='d3-canvas'  style="text-align:center;">
+					 <script src="growth.js"></script>
+					 </div>
 					<h3>Ethan Levien</h3>
 
 				</section>
 
-        <section>
-				<h2> Some math </h2>
-				<p> We can use <a href = "https://www.mathjax.org/"> mathjax</a> to embed equations:  </p>
 
-					\[\begin{aligned}
-									N_{k+1} = \left\{ \begin{array}{lr}
-									 2 q N_k + (1-q) N_k & \text{if we win}\\
-									 (1-q) N_k & \text{if we lose}
-									\end{array} \right.
-									\end{aligned}
-						\]
-					</br>
+				<!-- ########################################################## -->
+				<section>
+				<h2>Cell-to-cell variability</h2>
+
+				<img src="./figures/phenotype_vs_genotype.png" >
+
+				</section>
+
+
+				<!-- ########################################################## -->
+				<section>
+				<h2>Cell-to-cell variability</h2>
+
+				<img src="./figures/variability.png" >
+				<p> Eldar and Elowitz, Nature (2010) </p>
+
+				<!-- <div class="fragment">
+				<h4> &ldquo;Do Differences Make a Difference?&rdquo; - Altschuler and Wu (2010)</h4>
+			</div> -->
+				</section>
+
+
+				<!-- ########################################################## -->
+				<section>
+				<h2>Cell-to-cell variability</h2>
+
+				<img src="./figures/persisters.png" >
+				<p>  Balaban et al. Science (2004) </p>
+
+				</section>
+
+					<!-- ########################################################## -->
+				<section>
+				<h2> A closer look at variability in bacteria</h2>
+
+									<iframe width="820" height="415"
+				src="https://www.youtube.com//embed/yrJzMW5jcbM">
+				</iframe>
+				</section>
+
+
+
+							<!-- ########################################################## -->
+								<section>
+								<h2> Some numbers</h2>
+								<div class="container">
+									<div class = "col">
+									<img src="./figures/roberts.png" height="400">
+										<p>  Wang et al. Current Biology (2010) </p>
+									</div>
+											<div class = "col">
+												</br>
+												<table>
+														<thead><tr>
+																	<th>Phenotype</th>
+																	<th>CV ($\sigma/\mu$)</th>
+															</tr></thead>
+															<tbody><tr>
+																	<td>growth rates</td>
+																	<td>$.06-.18$</td>
+															</tr>
+															<tr>
+																	<td>generation times</td>
+																	<td>$.18-.25$</td>
+															</tr>  <tr>
+																		<td>size</td>
+																		<td>$.19-.27$</td>
+																</tr></tbody>
+													</table>
+												</br>
+												<div class="fragment">
+													<h4> Two questions  </h4>
+													<ul>
+													<li>How does selection act on variation in these traits?</li>
+													<li>What are the biological mechanisms which lead to variation in these traits? </li>
+												</ul>
+												</div>
+
+											</div>
+											</div>
+
+
+								</section>
+
+								<!-- ########################################################## -->
+								<!-- ########################################################## -->
+								<!-- ########################################################## -->
+								<!-- ########################################################## -->
+								<section>
+
+								<!-- ########################################################## -->
+							<section>
+							<h2> Part 1: From individual to population dynamics </h2>
+							<div class="container">
+								<div class="col">
+								<img src="./figures/euler.png" height="400">
+								</div>
+								<div class="col">
+									<div class="vertical-center">
+									<p></br></br>
+										&ldquo;Knowing the number of births and burials which happen during the course of one year, to find the number of all the living and their annual increase, for a given hypothesis of mortality.&rdquo;  – Leonhard Euler.
+									</p><div>
+								</div>
+							</div>
+							</section>
+
+							<!-- ########################################################## -->
+							<section>
+							<h2> Bellman-Harris Model </h2>
+							<p> Bellman and Harris (1948) and Powell (1956): Each cell's generation time is drawn independently from a distribution $f(\tau)$.</p>
+
+
+							<div class="viewof-sigma" class="horizontal-center"></div>
+							<div class="tree" ></div>
+							<script type="module">
+							import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@4/dist/runtime.js";
+							import define from "https://api.observablehq.com/@elevien/branching-process/2.js?v=3";
+							(new Runtime).module(define, name => {
+							  if (name === "viewof sigma") return Inspector.into(".viewof-sigma")();
+							  if (name === "tree") return Inspector.into(".tree")();
+							  return ["tree_data1"].includes(name) || null;
+							});
+							</script>
+
+
+							<div class = "fragment">
+							<p> In the long-term, $N \sim e^{\Lambda t}$ for some $\Lambda$. </p>
+						</div>
+					<div class = "fragment">
+					<h4> How does the rate at which the population grows depend on the distribution of generation times? </h4>
+				</div>
+
+
+
+						</section>
+
+
+
+
+						<!-- ########################################################## -->
+		 				<section>
+						<h2> Branching process models: Bellman-Harris </h2>
+
+						<div class="recursive_tree"></div>
+			<script type="module">
+			import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@4/dist/runtime.js";
+			import define from "https://api.observablehq.com/@elevien/branching-process/2.js?v=3";
+			(new Runtime).module(define, name => {
+			  if (name === "recursive_tree") return Inspector.into(".recursive_tree")();
+			});
+			</script>
+
+
 					<div class="fragment">
-						<h4> Yay!  </h4></div>
-          </section>
+						<p>The root cell has two daughters with progenies that grows exponentially at a rate, say $\Lambda$. </p>
+ <p> Let $\tau$ be the first cell's generation time:
+							<script type="math/tex; mode=display">
+						{\mathbb E}\left[N_{\rm daughter}|\tau\right] = Ae^{\Lambda(t-\tau)} \implies
+						{\mathbb E}\left[N_{\rm daughter}\right]= 	A \int_0^{\infty} e^{\Lambda(t-\tau)}f(\tau)d\tau
+							</script>
+						</p>
+					<div>
 
-  <section>
-    <h2> Animations too! </h2>
-      <p> It's easy to embed <a href= "https://d3js.org/">d3.js </a> animations using <a href = "https://observablehq.com/"> observable notebooks </a>.
-     <div class="fragment">
-    	<div class="viewof-a"></div>
-  	<div class="win_chart" class="horizontal-center"></div>
+						<div class="fragment">
+							<p> Writing the population size at time $t$ in terms of the size of both daughter progenies gives the so-called Euler-Lotka Formula
+								<script type="math/tex; mode=display">
+							Ae^{\Lambda t} = 	\color{rgb(20, 116, 111)}{{\mathbb E}\left[N_{\text{left daughter}}\right]} + \color{rgb(205, 88, 73)}	{{\mathbb E}\left[N_{\text{right daughter}}\right]}  = 2 A \int_0^{\infty} e^{\Lambda(t-\tau)}f(\tau)d\tau \implies \color{rgb(5, 5, 5)}{	\frac{1}{2} = \int_0^{\infty}f(\tau)e^{-\Lambda \tau}d\tau}
+								</script>
+							</p></div>
 
-    	<script type="module">
-    	import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@4/dist/runtime.js";
-    	import define from "https://api.observablehq.com/@elevien/kelly.js?v=3";
-    	(new Runtime).module(define, name => {
-    		if (name === "viewof a") return Inspector.into(".viewof-a")();
-    		if (name === "win_chart") return Inspector.into(".win_chart")();
-    		return ["data1"].includes(name) || null;
-    	});
-    	</script></div>
 
-    </section>
+
+
+						</section>
+
+
+						<!-- ########################################################## -->
+						<section>
+							<h2> The Euler-Lotka equation </h2>
+						<p>	We have derived the <b>the Euler-Lotka equation.</b>
+								<script type="math/tex; mode=display">
+									\frac{1}{2} = \int_0^{\infty}f(\tau)e^{-\Lambda \tau}d\tau = {\mathbb E}_f\left[e^{-\Lambda \tau}  \right].
+								</script>
+						</p>
+
+						<div class="fragment">
+
+							<p> If there is no variability, the number of cells at time $\tau_0$ is $2^{t/\tau_0}$, to the rate of exponential growth is
+								<script type="math/tex; mode=display">
+							\Lambda = \ln(2)/\tau_0
+								</script>
+								When there is variability Jenson's inequality tells
+								<script type="math/tex; mode=display">
+								\frac{1}{2} = {\mathbb E}_f\left[e^{-\Lambda \tau}  \right] \ge e^{-\Lambda {\mathbb E}_f[\tau]}
+								 \implies \Lambda \ge  \ln(2)/{\mathbb E}_f[\tau]
+								</script>
+
+							</p>
+						</div>
+
+						<div class="fragment">
+							<h4> If we fix the average generation time then variability will increase the rate of growth. </h4>
+							</div>
+
+							<div class="fragment">
+								<p> But in real populations there are always correlations! </p>
+								</div>
+						<!-- <div class="fragment">
+						<p>	Let's consider two limits:
+							<ul>
+								<li> All cells live for exactly a time $\tau_0$. Then we have
+									<script type="math/tex; mode=display">
+										\frac{1}{2} = e^{-\Lambda \tau_0} \implies \Lambda = \frac{\ln(2)}{\tau_0}
+									</script>
+								 </li>
+
+								 <li> Cells have a constant probability $1/\tau_0$ of dividing per unit time. Then
+									 <script type="math/tex; mode=display">
+										 \frac{1}{2} = \int_0^{\infty}e^{-\tau/\tau_0-\Lambda \tau}d\tau \implies \Lambda =\frac{1}{\tau_0}
+									 </script>
+								 </li>
+							</ul></p>
+						</div> -->
+
+
+						</section>
+
+
+
+					<!-- ########################################################## -->
+	 				<!-- <section>
+					<h2> Uncorrelated generation times are incompatible with cell-size control </h2>
+					<p> How restrictive is the assumption that generation times are uncorrelated? </p>
+
+
+						<div class="fragment">
+							<p> If cells growth exponentially at a rate $\lambda$ and divide symmetrically
+								<script type="math/tex; mode=display">
+								v_{i,k+1} = v_{i,k}e^{\lambda \tau}/2
+								\implies \ln v_{i,k+1} = -\ln (2) + \ln v_{i,k} + \lambda \tau
+								</script>
+							</p>
+						<div>
+
+							<div class="fragment">	<p>
+								Since cells double on average, $\langle	\lambda \tau \rangle = \ln(2)$ and the log sizes undergo a random walk without feedback between growth and size:</p>
+								<div class="viewof-alpha" class = "horizontal-center"></div>
+			<div class="size_control_chart"></div>
+			<script type="module">
+			import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@4/dist/runtime.js";
+			import define from "https://api.observablehq.com/@elevien/size-control.js?v=3";
+			(new Runtime).module(define, name => {
+			  if (name === "viewof alpha") return Inspector.into(".viewof-alpha")();
+			  if (name === "size_control_chart") return Inspector.into(".size_control_chart")();
+			  return ["size_control"].includes(name) || null;
+			});
+			</script>
+							</p><div>
+
+					</section> -->
+
+						<!-- ########################################################## -->
+						<section>
+							<h2> Generalized Euler-Lotka Formula  </h2>
+
+							<p>	The Euler-Lotka formula has an elagent generalization to the more biologically relevant case where cell's generation times are correlated with their ancestors (Lebowitz et al., 1974):
+								<script type="math/tex; mode=display">
+									\frac{1}{2} = \int_0^{\infty} \color{rgb(20, 116, 111)}{f_{\rm tree}(\tau)}e^{-\Lambda \tau}d\tau = {\mathbb E}_{\rm tree}\left[e^{-\Lambda \tau}  \right].
+								</script>
+								where $\color{rgb(20, 116, 111)}{f_{\rm tree}(\tau)}$ is the distribution of generation times <b> taken over all cells </b> throughout the history of an exponentially growing population.
+							</p>
+
+							<div class="tree_vs_lineage"></div>
+
+					<script type="module">
+					import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@4/dist/runtime.js";
+					import define from "https://api.observablehq.com/@elevien/lineage-representation.js?v=3";
+					(new Runtime).module(define, name => {
+					  if (name === "tree_vs_lineage") return Inspector.into(".tree_vs_lineage")();
+					});
+					</script>
+					<p> In general $\color{rgb(20, 116, 111)}{f_{\rm tree}(\tau)} \ne  \color{rgb(205, 88, 73)}{f(\tau)}$</p>
+
+
+
+							<!-- <div class="fragment">	<p>
+								The long term growth rate satisfies
+								<script type="math/tex; mode=display">
+									\frac{1}{2} = \int_0^{\infty} \color{rgb(205, 88, 73)}{f_{\rm tree}(\tau)}e^{-\Lambda \tau}d\tau
+									\quad \text{  with }\quad	 \color{rgb(205, 88, 73)}{f_{\rm tree}(\tau)} = 2\int_0^{\infty}f(\tau|s) \color{rgb(205, 88, 73)}{f_{\rm tree}(s)}e^{-\Lambda s}ds
+								</script></p></div> -->
+
+
+				<!-- <div class="fragment">
+												<h4>  But does in make sense to think about variability from a time-centric perspective? </h4></div> -->
+
+								</section>
+
+
+
+
+
+						<!-- ########################################################## -->
+							<section>
+					<h2> From single-cell data to population growth </h2>
+
+					<img src="./figures/pheno_to_fitness.png" >
+
+						<h4> Can we predict the population dynamics from observations of single-cells? </h4>
+					<!-- <div class="fragment">
+					<img src="./figures/mother_machine.png" height="400">
+						</div>
+
+						<div class="fragment">	<h4>Question: can we bypass the modeling step and go from single-cell data $\color{rgb(205, 88, 73)}{\to}$ predictions about population growth?   </h4>
+							</div> -->
+						</section>
+
+						<!-- ########################################################## -->
+						<section>
+							<h2> Lineage representation of growth exponent  </h2>
+
+							<p>
+								 <!-- We can imagine each lineage in the mother-machine as being sampled from the population by picking a daughter cell with probability 1/2 at each branch. -->
+								<script type="math/tex; mode=display">
+								P(n,T) = {\mathbb P}[\text{Observe $n$ divisions along a lineage of length $T$}]
+								</script>
+							 </p>
+
+
+							<!-- <div class="lineage_from_tree"></div>
+
+								<script type="module">
+								import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@4/dist/runtime.js";
+								import define from "https://api.observablehq.com/@elevien/lineage-representation.js?v=3";
+								(new Runtime).module(define, name => {
+								  if (name === "lineage_from_tree") return Inspector.into(".lineage_from_tree")();
+								});
+								</script> -->
+
+								<img src="./figures/lineage_from_tree.png" height=300>
+
+								<p> Levien et al. PRL (2020) </p>
+							<!-- <div class="fragment">
+							<p> If there are $N(n,T)$ lineages with $n$ cell divisions, the probability that we select a lineage with exactly $n$ cell divisions  is then
+								<script type="math/tex; mode=display">
+								P_T(n) = \frac{1}{2^n}\times N(n,T)
+								</script>
+							</p></div> -->
+
+						</section>
+
+						<!-- ########################################################## -->
+						<section>
+							<h2> Lineage representation of growth exponent  </h2>
+
+
+							<div class="fragment">
+							<p> With $N(n,T) = P(n,T)\times 2^n$ and summing over $n$ gives the total number of cells in terms of the an average with respect to the distribution $P(n,T)$:
+								<script type="math/tex; mode=display">
+								N(T) = \sum_{n=1}^{\infty}N(n,T)\approx \sum_{n=1}^{\infty}2^nP(n,T) = {\mathbb E}_P\left[ 2^n\right]
+								</script>
+							</p></div>
+
+							<div class="fragment">
+								<p> Since grows exponentially, $N(T) \sim e^{\Lambda T}$, this implies a representation of the population growth rate in terms of an average over lineage statistics
+									<script type="math/tex; mode=display">
+								\Lambda =\frac{1}{T}\ln {\mathbb E}_P\left[ 2^n\right] + O\left(\frac{1}{T}\right)
+									</script>
+								</p>
+								</div>
+
+							<div class="fragment">
+							<h4> The key point here is that the distribution $P(n,T)$ can be determined from independent lineages!</h4></div>
+
+						</section>
+
+						<!-- ########################################################## -->
+						<section>
+							<h2> Lineage algorithm </h2>
+						<p>	Given the number of divisions $n_1,n_2,\dots,n_M$ on each of $M$ lineages, we can estimate $\Lambda$ as
+								<script type="math/tex; mode=display">
+								\Lambda \approx \hat{\Lambda}_{\rm lin} = \frac{1}{T}\ln \left[\frac{1}{M}\sum_{i=1}^M2^{n_i} \right]
+									</script> </p>
+
+
+							<div class="container">
+								<div class = "col">
+										<div class = "fragment">
+								<img src="./figures/lineage_convergence.png" height="400">
+							</div>
+							</div>
+								<div class = "col">
+									<br><br>
+									<!-- <p>We simulated many ensambles of lineages of different durations, ran the lineages algorithm and compared to the true population growth rate. </p> -->
+									<div class = "fragment">
+									<h4> The error between algorithm's estimate and the true growth exponent is non-monotonic  in the duration of the lineages!</h4></div>
+								</div>
+							</div>
+
+							</section>
+
+						<!-- ########################################################## -->
+						<!-- <section>
+							<h2> Non-monotonic convergence in lineage durations </h2>
+							<div class="container">
+								<div class = "col">
+								<img src="./figures/lineage_convergence.png" height="400">
+							</div>
+								<div class = "col">
+									<p>We simulated many ensambles of lineages of different durations, ran the lineages algorithm and compared to the true population growth rate. </p>
+									<div class = "fragment">
+									<h4> The algorithm's estimate the true growth exponent is non-monotonic  in the duration of the lineages!</h4></div>
+								</div>
+							</div>
+
+						</section> -->
+
+
+						<!-- ########################################################## -->
+						<section>
+							<h2> Non-monotonic convergence in lineage durations </h2>
+							<p> Since lineages are statisticlly identical
+								<script type="math/tex; mode=display">
+							\frac{n_j}{T} = \frac{1}{\frac{1}{n_i}\sum_{j=1}^{n_i}\tau_j} \to \frac{1}{{\mathbb E}[\tau]}
+								</script>
+							</p>
+
+							<div class="fragment">
+							<p> If we apply the algorithm and plug in $n = T/{\mathbb E}[\tau]$, we have for large $T$
+								<script type="math/tex; mode=display">
+							\hat{\Lambda}_{\rm lin} \approx \frac{1}{T}2^{T/{\mathbb E}[\tau]} = \frac{\ln(2)}{{\mathbb E}[\tau]}
+								</script>
+							</p></div>
+
+							<div class="fragment">
+							<h4> $\implies$ the large $T$ and large $M$ limits do not commute!
+							</h4></div>
+
+							<!-- <p>To understand the non-monotonic convergence, suppose we have only one lineage. Then our estimate from the algorithm is
+								<script type="math/tex; mode=display">
+							\hat{\Lambda}_{\rm lin} = \frac{1}{T}\ln (2^n) = \frac{\ln(2)n}{T} = \frac{\ln(2)}{\frac{1}{n}\sum_i^n\tau_i}
+							\to \frac{\ln(2)}{{\mathbb E}[\tau]}
+								</script>
+								The last statement is an application of the strong law of large numbers for renewal processes.
+							 </p>
+
+							 <div class="fragment">
+								 <p> Now if we have $M$ lineages, we can use the bounds
+									 <script type="math/tex; mode=display">
+					 {\rm min}_i \frac{1}{T}\ln (2^{n_i})	\le	\hat{\Lambda}_{\rm lin} \le {\rm max}_i \frac{1}{T}\ln (2^{n_i})
+									 </script>
+									 which both converge to $\ln(2)/{\mathbb E}[\tau]$.
+								 </p>
+							 </div> -->
+
+
+						</section>
+
+						<!-- ########################################################## -->
+						<section>
+							<h2> Application to experimental data </h2>
+
+							<img src="./figures/lineage_alg_data.png" height="400">
+							<p> Data from Y. Tanouchi et al Scientific Data 4 (2017) </p>
+								</section>
+
+						<!-- ########################################################## -->
+						<section>
+						<h2> A closer look  </h2>
+						<p> The central limit theorem tells us
+							<script type="math/tex; mode=display">
+							\frac{1}{M}\sum_{i=1}^M 2^{n_i} \approx {\mathbb E}\left[2^n \right] + \underbrace{\sqrt{\frac{{\rm var}(2^n)}{M}}\eta}_{\text{sampling error}}
+							</script>
+						</p>
+
+						<div class="fragment">
+						<p>This limplies the number of lineages must be much greater than 	${\rm var}(2^n)/{\mathbb E}\left[2^n \right]^2$
+							which you might recognize as the coefficent of variation of $2^n$.
+						</p></div>
+
+
+						<div class="fragment">
+						<p>To rescue the lineage algorithm we need to understand when the sampling error is small.
+						</p></div>
+
+
+						</section>
+
+						<!-- ########################################################## -->
+						<section>
+						<h2> Conection to Large deviation theory  </h2>
+						<p> The division distribution satisfies a large deviation principle in $\gamma = n/T$
+							<script type="math/tex; mode=display">
+						p(\gamma,T) \sim e^{TI(\gamma)} \implies {\rm var}(\gamma) = \frac{1}{TI''(1/{\mathbb E}[\tau])}
+							</script>
+						</p>
+
+						<div class="container">
+							<div class="col">
+						<div class="fragment">
+						<img src="./figures/varnT.png" >
+					</div></div>
+
+					<div class="col">
+					<div class="fragment">	<p> We can obtain a condition for the algorithm to resolve the fluctuations in $\gamma$:
+							<script type="math/tex; mode=display">
+						M \gg 2^{T\ln(2)/I''(1/{\mathbb E}[\tau])}.
+							</script>
+						An order of magnitude estimate using existing data gives $2^{T\ln(2)/I''(1/{\mathbb E}[\tau])}\approx 200$, but we only have on the order of $100$ lineages.
+					</p></div>
+					</div></div>
+
+
+
+
+						<!-- <p>On the other hand
+							<script type="math/tex; mode=display">
+							\Lambda \approx \frac{\ln(2)}{{\mathbb E}[\tau]}
+							+ \underbrace{\frac{\ln(2)^2}{2 I''(1/{\mathbb E}[\tau])}}_{\text{correction for variability}}
+							</script>
+							thus we have the fluctuation-growth relation
+							<script type="math/tex; mode=display">
+						\underbrace{\Lambda - \frac{\ln(2)}{{\mathbb E}[\tau]}}_{\text{effect of variability}}
+						=\underbrace{\frac{\ln(2)^2{\rm var}(\sqrt{T}\gamma) }{2}}_{\text{fluctuations in division rate}}
+							</script>
+							</p> -->
+
+
+						</section>
+
+
+						<!-- ########################################################## -->
+						<section>
+								<h2> Large deviation representation of population growth </h2>
+								<p> In the addition to the application our algorithm, the large deviation formulation provides us with a noval representation of the growth exponent
+									<script type="math/tex; mode=display">
+									\Lambda \approx \frac{\ln(2)}{{\mathbb E}[\tau]}
+									+ \underbrace{\frac{\ln(2)^2}{2 I''(1/{\mathbb E}[\tau])}}_{\text{correction for variability}}
+									</script>
+									thus we have the fluctuation-growth relation
+									<script type="math/tex; mode=display">
+								\underbrace{\Lambda - \frac{\ln(2)}{{\mathbb E}[\tau]}}_{\text{effect of variability}}
+								=\underbrace{\frac{\ln(2)^2{\rm var}(\sqrt{T}\gamma) }{2}}_{\text{fluctuations in division rate}}
+									</script>
+									</p>
+							</section>
+
+							<!-- ########################################################## -->
+							<section>
+									<h2> Take-aways </h2>
+
+
+
+											<div><h4> What have we learned?</h4>
+												<ul>
+													<li> The question of how single-cell dynamics affect fitness leads to rich mathematical questions in stochastic processes and data analysis.</li>
+													<li> We have presented a noval algorithm for estimating the population growth rate from lineage data and analyzed the convergence. </li>
+													<li> This has led to a large deviation formulation of the population growth exponent. </li>
+													<ul></div>
+
+														<div class = "fragment">
+														<h4> What next? </h4>
+														<ul>
+															<li> Work with experimentalists to probe fitness effects of physiological perturbations. </li>
+															<ul></div>
+											</section>
+
+								</section>
+
+
+
+
+					</section>
+
+
+					<!-- ########################################################## -->
+					<!-- ########################################################## -->
+					<!-- ########################################################## -->
+					<!-- ########################################################## -->
+					<section>
+
+					<section>
+						<h2> Part 2: Growth rate fluctuations in cancer cells </h2>
+
+
+							<img src="./figures/smr.png" height="400">
+							<p>Lymphocytic leukemia cells from mice (Miettinen et al. Elife 2019) </p>
+
+
+						<!-- <p> Despite a vast body of work seeking to quantify and explore the consequences of cell-to-cell variability, the underlying causes of this variability remain largerly unknown.</p>
+
+						<div class = "fragment">
+						<p> It is generally understood that biomass is accumulated exponentially, but with some variability within and between cell-cycles
+							<script type="math/tex; mode=display">
+							\frac{d}{dt}M(t) = \lambda M(t)
+							</script>
+						</p>
+					</div>-->
+					</section>
+
+
+				<!-- ########################################################## -->
+				<section>
+				 <h2> Sources of variation in growth rates </h2>
+
+				 <img src="./figures/L1210_cells.png" height="250">
+
+				 <p> To first approximation, cells grow exponentially $M(t) \sim M(0)e^{\lambda t}$. But with signficant variation (${\rm CV} \approx 0.2$).</p>
+
+
+				 <div class = "fragment">
+					<h4> What factors make cells grow at differnt rates? </h4>
+				</div>
+					</section>
+
+				<!-- ########################################################## -->
+				<section>
+					<h2> Sources of variation in growth rates </h2>
+
+
+
+	<div class = "fragment">
+						<img src="./figures/growth_decomp.png" height="400">
+							</div>
+			</section>
+
+
+			<!-- ########################################################## -->
+			 <section>
+			 <h2> Mathematical formulation of problem </h2>
+
+			 <p>
+				Mathematically, we can imagine decomposing the growth rate
+				 <script type="math/tex; mode=display">
+					\lambda(t) = \frac{1}{M}\frac{d}{dt}M = \lambda_0 + g_{\text{cell-cycle}}(t) + g_{\text{fluctuations}}(t) +\cdots
+					</script>
+					but remember, we don't have measurments of $\lambda(t)$ directly, rather we have noisy measurments of $M$.
+			 </p>
+
+			 <div class = "fragment">
+			 <p>
+			In terms of the log masses:
+				<script type="math/tex; mode=display">
+\ln M = \int_0^t \lambda(s)ds =\ln M(0) + \lambda_0 t+ \underbrace{\int_0^tg_{\text{cell-cycle}}(t)ds}_{G_{\text{cell-cycle}}} + \underbrace{\int_0^tg_{\text{fluctuations}}(t)dt}_{G_{\text{fluctuations}}}
++\cdots+\epsilon(t)
+				 </script>
+			where $\epsilon(t)$ is an experimntal error term.
+			</p></div>
+
+			<div class = "fragment">
+				<h4> What can we say about the terms in this decomposition? </h4>
+				</div>
+
+
+
+		 </section>
+
+		 <!-- ########################################################## -->
+		 <section>
+		 <h2> Background: Bayes  </h2>
+		 <p>In Bayesian statistics, we express our uncertianty about a set of parameters $\theta$ given our data $X$ using Bayes' formula</p>
+		 	<img src="./figures/bayes.png" height="400">
+			 <!-- <script type="math/tex; mode=display">
+			 P(\theta,X) = P(\theta|X)P(X) = P(X|\theta)P(\theta)
+  \implies \color{rgb(53, 95, 170)}{P(\theta|X)} = \frac{\color{rgb(107, 139, 105)}{P(X|\theta)}\color{rgb(190, 92, 83)}{P(\theta)}}{P(X)}
+				</script>
+				<ul>
+					<li>	$\color{rgb(190, 92, 83)}{P(\theta)}$ = priors. Expresses our knowledge of the paramaters before we look at the data)</li>
+				<li>	$\color{rgb(107, 139, 105)}{P(X|\theta)}$ = likelihood. Given a set of paramaters, what is the distribution of the data? Think of this as our model.</li>
+				<li>	$P(X)$ = evidence. The distribution of the data, averaged over all possible paramaters values. </li>
+			<li>	$\color{rgb(53, 95, 170)}{P(\theta|X)}$ = posterior.  The distribution of the paramates, given our observations of the data. </li>
+				</ul> 	</p>  -->
+
+
+
+
+	 </section>
+
+<!-- ########################################################## -->
+	 <section>
+	 <h2> Functions as parameters  </h2>
+
+ 	<!-- <p>The idea of Gaussian processes is to think of the values of the unknown functions $g_i$ as our "paramaters".
+ 	 </p> -->
+
+	 <img src="./figures/gp_idea.png" height="400">
+
+ 	 <h4>But how do we place priors distribution on the space of functions?</h4>
+
+	  </section>
+
+<!-- ########################################################## -->
+	 <section>
+	 <h2> Gaussian processes priors  </h2>
+	 <p><b>DEFINITION:</b> A stochastic process $X_t$ is a Gaussian process if, for any finite set of times $t_1,\dots,t_k$, the joint distribution of
+		 <script type="math/tex; mode=display">
+			(X_{t_1},X_{t_2},\dots,X_{t_k})
+			</script>
+			is a multivariate Gaussian $\implies$ it's distribution is specified entirely by the means ${\mathbb E}[X_{t_i}]$ and correlations ${\mathbb E}[X_{t_i}X_{t_j}]$.
+		</p>
+
+	<div class = "fragment">
+		<p> For a mean zero Gaussian process, the definition implies that the distribution of $(X_{t_1},X_{t_2},\dots,X_{t_k})$ is
+			<script type="math/tex; mode=display">
+ 			P[(X_{t_1},X_{t_2},\dots,X_{t_k}) = {\bf x}] = \frac{e^{-{\bf x}^T\Sigma{\bf x}}}{(2\pi)^{k/2}({\rm det}\Sigma)^{1/2}}
+ 			</script>
+			for some $k\times k$ matrix with elements $\Sigma_{i,j} = {\mathbb E}[X_{t_i}X_{t_j}]$.
+		</p>
+
+
+		<h4>The <b>kernel</b> function $k(t,t') = {\mathbb E}[X_{t}X_{t'}]$ defines a zero mean Gaussian process.  </h4> </div>
+
+</section>
+
+<!-- ########################################################## -->
+<section>
+<h2> Background: Gaussian processes  </h2>
+
+
+<div class = "fragment">
+<p> We often select the covariance function, $k(t,t')$, from some parametric family. For example, we might have
+	<script type="math/tex; mode=display">
+	\Sigma_{i,j} = k(t_i,t_j) = {\mathbb E}[X_{t_i}X_{t_j}] = Ae^{-(t_i-t_j)^2/\tau}
+	</script>
+</p>
+
+
+	<div class="viewof-tau" class="horizontal-center"></div>
+	<div class="gp_chart"></div>
+	<script type="module">
+	import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@4/dist/runtime.js";
+	import define from "https://api.observablehq.com/@elevien/gaussian-processes.js?v=3";
+	(new Runtime).module(define, name => {
+	  if (name === "viewof tau") return Inspector.into(".viewof-tau")();
+	  if (name === "gp_chart") return Inspector.into(".gp_chart")();
+	  return ["times","sample_mv_normal"].includes(name) || null;
+	});
+	</script></div>
+
+
+<div class ="fragment">
+<p> In a Gaussian process regression, we place Gaussian process priors on some unknown function we wish to infer (Rasmussen and Christopher 2005). </p></div>
+
+</section>
+
+
+
+<!-- ########################################################## -->
+<section>
+<h2> Posterior inference </h2>
+<p>Suppose our data ${\bf y} = \ln {\bf M} = (\ln {\bf M}(t_1),\dots,\ln {\bf M}(t_k))$ can be expressed as a sum of contributions from different factors, e.g.,
+		<script type="math/tex; mode=display">
+		{\bf y} = {\bf G}_1 + {\bf G}_2 + {\boldsymbol \epsilon}
+		</script>
+With Gaussian process priors on the functions $G_1$ and $G_2$ and associated kernel matrices $\Sigma_1$ and $\Sigma_2$, the Bayesian posterior can be written as	<script type="math/tex; mode=display">
+	P({\bf G}_1,{\bf G}_2|{\bf y}) = 	P({\bf y}|{\bf G}_1,{\bf G}_1)\underbrace{P({\bf G}_1)P({\bf G}_1)}_{\text{Gaussian process priors}}
+	 \\ \propto e^{-({\bf y}-{\bf G}_1+{\bf G}_2)^T{\bf I}({\bf y}-{\bf G}_1+{\bf G}_2)/2\sigma_{\epsilon^2}} \times e^{-{\bf G}_1^T\Sigma_1^{-1}{\bf G}_1} \times e^{-{\bf G}_2^T\Sigma_2^{-1}{\bf G}_2}
+	</script></p>
+
+
+<div class ="fragment"> <p>
+	Lots of linear algebra later, we get the mean and variance of the posterior distribution of the unknown function values ${\bf G}_{j}$ are
+	<script type="math/tex; mode=display">
+	{\mathbb E}[{\bf G}_{j}]
+	= \Sigma_j\left[\Sigma_1+ \Sigma_2 + \sigma_{\epsilon}^2 {\bf I }\right]^{-1}{\bf y}
+	\text{   and   }	{\rm var}[{\bf G}_{j}] = {\rm diag}\left(\Sigma_j-
+			\Sigma_j^T\left[\Sigma_1+ \Sigma_2 + \sigma_{\epsilon}^2 {\bf I }\right]^{-1}\Sigma_j\right).
+		</script>
+</p>
+<!-- <p> It turns out the posterior distributions of our unknown functions can be expressed analytically </p> -->
+</section>
+
+<!-- ########################################################## -->
+<section>
+<h2> Application to data  </h2>
+<p>An important fact is that the derivative of a Gaussian process is also a Gaussian process.  </p>
+<div class ="fragment">
+<p> $\implies$ if we specify priors on the function $g_i$ we can determine corresponding Gaussian process priors on their integrals $G_i$. </p>
+</div>
+<div class ="fragment">
+		<h4>The question is: how do we select the appropriate kernels for the various contributions to growth rate vraiation? </h4>
+	 </div>
+
+</section>
+
+<!-- ########################################################## -->
+<section>
+<h2> Choice of kernels   </h2>
+
+</section>
+
+<!-- ########################################################## -->
+<section>
+<h2> Application to data  </h2>
+	<img src="./figures/gp_kernels.png" height="400">
+</section>
+
+		 <section>
+		 <h2> Results of data anlysis </h2>
+
+		 <img src="./figures/gp_decomp_data.png" height="500">
+	 </section>
+
+
+
+				<!-- ########################################################## -->
+				<section>
+						<h2> Summary </h2>
+
+					<div><h4> What have we learned?</h4>
+						<ul>
+							<li> Little is known about what factors lead to cell-to-cell variability in growth rates.</li>
+							<li> Gaussian process provide us with a powerful toolset for probing the contributions to cell-to-cell variability in growth rates. </li>
+							<li> We find that there exists cell-to-cell variability on both long and short time-scales in mammalian data.  </li>
+							<ul></div>
+
+								<div class = "fragment">
+								<h4> What next? </h4>
+								<ul>
+									<li> In preliminary work we have found little to no dependence on cell mass in growth rates (contrary to existing hyptheses). Our goal is to think more carefully about the role of growth rates in modulating cell-size homeostasis.  </li>
+									<li> Can we extend this framework to quantify other types of cell-to-cell variability? (e.g. protein concentrations?)  </li>
+									<ul></div>
+					</section>
+
+	</section>
+					<!-- ########################################################## -->
+					<section>
+						<h2> Thanks for listening! </h2>
+						<img src="./figures/thankyou.png" height="500">
+
+
+		</section>
+
 
 
 			</div>
