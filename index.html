@@ -50,7 +50,7 @@
 			<div class="slides">
 				<!-- ########################################################## -->
 				<section>
-					<h2>Making sense of non-genetic variability: population and single-cell perspectives </h2>
+					<h2>Making sense of non-genetic variability </h2>
 						<div  id='d3-canvas'  style="text-align:center;">
 					 <script src="growth.js"></script>
 					 </div>
@@ -171,8 +171,8 @@
 
 							<!-- ########################################################## -->
 							<section>
-							<h2> Bellman-Harris Model </h2>
-							<p> Bellman and Harris (1948) and Powell (1956): Each cell's generation time is drawn <b>independently</b> from a distribution $f(\tau)$.</p>
+							<h2> Branching process model </h2>
+							<p> Alfred Lotka (1934), Bellman and Harris (1948) and Powell (1956): Each cell's generation time is drawn <b>independently</b> from a distribution $f(\tau)$.</p>
 
 							<div class = "fragment">
 							<div class="viewof-sigma" class="horizontal-center"></div>
@@ -204,7 +204,7 @@
 
 						<!-- ########################################################## -->
 		 				<section>
-						<h2> Branching process models: Bellman-Harris </h2>
+						<h2> Branching process model </h2>
 
 						<div class="recursive_tree"></div>
 			<script type="module">
@@ -217,7 +217,7 @@
 
 
 					<div class="fragment">
-						<p>The root cell has two daughters with progenies that grows exponentially at the same rate $\Lambda$. </p>
+						<p>The root cell has two daughters with progenies that grow exponentially at the same rate $\Lambda$. </p>
  <p> Let $\tau$ be the first cell's generation time:
 							<!-- <script type="math/tex; mode=display">
 						{\mathbb E}\left[N_{\rm daughter}|\tau\right] = Ae^{\Lambda(t-\tau)} \implies
@@ -261,7 +261,7 @@
 
 						<div class="fragment">
 							<p>
-								When there is variability <b>Jensen's inequality</b> tells
+								<b>Jensen's inequality</b> tells us
 								<script type="math/tex; mode=display">
 								\frac{1}{2} = {\mathbb E}_f\left[e^{-\Lambda \tau}  \right] \ge e^{-\Lambda {\mathbb E}_f[\tau]}
 								 \implies \Lambda \ge  \ln(2)/{\mathbb E}_f[\tau]
@@ -483,7 +483,7 @@
 									<br><br>
 									<!-- <p>We simulated many ensambles of lineages of different durations, ran the lineages algorithm and compared to the true population growth rate. </p> -->
 									<div class = "fragment">
-									<h4> The error between algorithm's estimate and the true growth exponent is non-monotonic  in the duration of the lineages!</h4></div>
+									<h4> The error between the algorithm's estimate and the true growth exponent is non-monotonic  in the duration of the lineages!</h4></div>
 								</div>
 							</div>
 
@@ -504,6 +504,7 @@
 							</div>
 
 						</section> -->
+
 
 
 						<!-- ########################################################## -->
@@ -615,11 +616,19 @@
 
 						</section>
 
+						<!-- ########################################################## -->
+						<section>
+							<h2>Proof of concept </h2>
+								<img src="./figures/Lambda_lin_vs_Lambda.png" height = 400>
+
+
+							</section>
+
 
 						<!-- ########################################################## -->
 						<section>
 								<h2> Large deviation representation of population growth </h2>
-								<p> In the addition to the application our algorithm, the <b>Large deviation</b> formulation provides us with a noval representation of the growth exponent
+								<p> The <b>Large deviation</b> formulation provides us with a noval representation of the growth exponent
 									<script type="math/tex; mode=display">
 									\Lambda \approx \frac{\ln(2)}{{\mathbb E}[\tau]}
 									+ \underbrace{\frac{\ln(2)^2}{2 I''(1/{\mathbb E}[\tau])}}_{\text{correction for variability}}
@@ -636,29 +645,39 @@
 							<section>
 									<h2> Summary </h2>
 
-									<h4> What have we learned?</h4>
+				<div><h4> What have we learned?</h4>
+					<ul>
+					<li> We have presented a novel algorithm for estimating the population growth rate from lineage data and analyzed the convergence.
+					</li>
+					<li> This has led to a large deviation formulation of the population growth exponent, leading to new theoretical results! </li>
+					<ul></div>
+</br>
+							<div class = "fragment">
+							<h4> What next? </h4>
+							<ul>
+								<li> More data!  </li>
+								<li> Connection to disease transmission? variability makes epidemics spread faster Grassly Nat. Micro. (2008) </li>
+								<li> Our work assumes correlations decay exponentially, i.e. no "long-term" heritability... </li>
+								<ul></div>
+
+									<!-- <h4> What have we learned?</h4>
 
 											<div>
 												<ul>
 													<li> The question of how single-cell dynamics affect fitness leads to rich mathematical questions in stochastic processes and data analysis.</li>
 													<li> We have presented a novel algorithm for estimating the population growth rate from lineage data and analyzed the convergence. </li>
-													<li> This has led to a large deviation formulation of the population growth exponent. </li>
-													<ul></div>
+													<li> This has led to a large deviation formulation of the population growth exponent, leading to new theoretical results! </li>
+													<ul></div> -->
 
-														<!-- <div class = "fragment">
-														<h4> What next? </h4>
-														<ul>
-															<li> Work with experimentalists to probe fitness effects of physiological perturbations. </li>
-															<ul></div> -->
 											</section>
 
 											<!-- ########################################################## -->
-											<section>
+											<!-- <section>
 												<h2> Future work </h2>
 
 												<img src="./figures/elf2020.png" height="400">
 												<p>Camsund et al. (2020) </p>
-											</section>
+											</section> -->
 
 								</section>
 
@@ -961,7 +980,7 @@ Some linear algebra later, we get
 								<h4> What next? </h4>
 								<ul>
 									<li> In preliminary work we have found little to no dependence on cell mass in growth rates (contrary to existing hyptheses). Our goal is to think more carefully about the role of growth rates in modulating cell-size homeostasis.  </li>
-									<li> Can we extend this framework to quantify other types of cell-to-cell variability? (e.g. protein concentrations?)  </li>
+									<li> <b>Understanding growth response to drug treatment.</b>  </li>
 									<li> Can we develop a <b>mechanistic model</b> of the growth rate flucuations which explained the two time-scales?  </li>
 									<ul></div>
 					</section>
